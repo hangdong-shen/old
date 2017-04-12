@@ -1,5 +1,5 @@
 # Site settings
-title: Hangd、ong Blog
+title: Hangdong Blog
 SEOTitle: 杭东的博客 | Hangdong Blog
 header-img: img/home-bg.jpg
 email: eastward_nj@foxmail.com
@@ -48,12 +48,12 @@ kramdown:
 
 
 # Disqus settings
-disqus_username: hangdong
+#disqus_username: hangdong
 
 # Duoshuo settings
 #duoshuo_username: huxblog
 # Share component is depend on Comment so we can NOT use share only.
-duoshuo_share: true                     # set to false if you want to use Comment without Sharing
+#duoshuo_share: true                     # set to false if you want to use Comment without Sharing
 
 
 
