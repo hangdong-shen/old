@@ -6,7 +6,7 @@ email: eastward_nj@foxmail.com
 description: "关于软件、美食与娃"
 keyword: "杭东, Hangdong, 博客, 个人网站, 互联网, 嵌入式系统, 设计, 产品"
 #url: "https://huangxuan.me"              # your host, for absolute URL
-baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
+baseurl: "/hangdong-shen.github.io"         # for example, '/blog' if your blog hosted on 'host/blog'
 
 
 
