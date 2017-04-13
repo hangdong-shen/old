@@ -13,11 +13,11 @@ baseurl: "/hangdong-shen.github.io"         # for example, '/blog' if your blog 
 # SNS settings
 RSS: false
 #weibo_username:     huxpro
-zhihu_username:     橄榄树
+zhihu_username:     hangdong
 github_username:    hangdong-shen
 #twitter_username:  huxpro
 #facebook_username:  huxpro
-linkedin_username:  hangdong shen
+linkedin_username:  hangdong1
 
 
 
