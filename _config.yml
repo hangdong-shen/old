@@ -48,7 +48,7 @@ kramdown:
 
 
 # Disqus settings
-disqus_username: hangdong
+#disqus_username: hangdong
 
 # Duoshuo settings
 #duoshuo_username: huxblog
