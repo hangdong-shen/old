@@ -60,7 +60,7 @@ disqus_username: hangdong
 
 # Analytics settings
 # Baidu Analytics 
- ba_track_id: c9ffb25507af2384c22366e6ca2ebf51
+ba_track_id: c9ffb25507af2384c22366e6ca2ebf51
 
 # Google Analytics
 #ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
