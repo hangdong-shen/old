@@ -48,7 +48,8 @@ kramdown:
 
 
 # Disqus settings
-#disqus_username: hangdong
+disqus_username: hangdong
+disqus_show_comment_count: true
 
 # Duoshuo settings
 #duoshuo_username: huxblog
