@@ -34,6 +34,8 @@ coexist.
 The big picture of VFS：
 [https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/IO_stack_of_the_Linux_kernel.svg/440px-IO_stack_of_the_Linux_kernel.svg.png](https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/IO_stack_of_the_Linux_kernel.svg/440px-IO_stack_of_the_Linux_kernel.svg.png "VFS_IO")
 
+![](/img/in-post/The Linux Storage Stack Diagram.png)
+*VFS related*
 
 从这张图里可以较清晰的看到：
 
@@ -153,6 +155,7 @@ sys_mount把用户空间的参数复制到内核空间，然后do_mount
     destroy_inodecache();
     return err; 
 	}
+
 ext2文件系统在启动的时候向VFS注册自己的对象属性。
 do_new_mount有两个与mount相关的动作，一个是vfs_kern_mount，一个是do_add_mount
     
