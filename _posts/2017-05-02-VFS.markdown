@@ -135,9 +135,9 @@ sys_mount把用户空间的参数复制到内核空间，然后do_mount
     return err;
 	}
 
-这个实现里面会把每个已安装的文件系统都会有一个 struct vfsmount 结构体变量来进行描述（这里要注意：他描述已安装(mount)的文件系统，而 filesystem_type 则描述已注册的文件系统），这里就是为他分配一个struct vfsmount 变量，另外他还会根据文件系统名遍历file_systems 找到已注册的那个文件系统对象并调用 get_sb() 函数来读入超级块，执行挂载操作。
+每个已安装的文件系统都会有一个 struct vfsmount 结构体变量来进行描述（这个变量描述的是已安装(mount)的文件系统，而 filesystem_type 则描述已注册的文件系统），这里就是为要新安装的文件系统分配一个struct vfsmount 变量，接着根据文件系统名遍历file_systems 找到已注册的那个文件系统对象并调用 get_sb() 函数来读入超级块，执行挂载操作。
 
-所有安装到 VFS 里的文件系统，都有一个 vfsmount 结构体，而文件系统安装之前，则必须先注册他，这就要使用 file_system_type 结构体来描述一个注册在 VFS 里的文件系统，他通过 register_filesystem() 注册到 VFS 内。
+所有安装到 VFS 里的文件系统，都有一个 vfsmount 结构体，而文件系统安装之前，则必须先注册它，这就要使用 file_system_type 结构体来描述一个需要注册在 VFS 里的文件系统，通过 register_filesystem()这个接口注册到 VFS 内。
 拿ext2举个栗子：
     
 	static int __init init_ext2_fs(void)
@@ -236,7 +236,8 @@ do_new_mount有两个与mount相关的动作，一个是vfs_kern_mount，一个�
 	}
 
 kernel里面goto实现也蛮多的，我看的是4.10相比2.6已经优化了很多goto，说明只要用的得体，goto也不是什么洪水猛兽，我想起当时我和某一个前东家的架构师对goto的讨论，也许他要是看到这些代码应该也能接受了吧。
-这两个方法就把新挂载的文件系统插入队列，安装新的文件系统到用户空间的目录树，当用户查找文件时，只要他发现这是一个挂载点，那么他就会到 mount_hashtable 这个哈希队列找到挂载到这个目录上的文件系统的 vfsmount 对象，继而找到文件系统的根目录，这样也就能继续寻找下去了，vfsmount是整个过程的关键线索。
+
+这两个方法获取vsfmount对象，将新挂载的文件系统插入队列，接着安装新的文件系统到用户空间的目录树，当用户查找文件时，只要他发现这是一个挂载点，那么他就会到 mount_hashtable 这个哈希队列找到挂载到这个目录上的文件系统的 vfsmount 对象，继而找到文件系统的根目录，这样也就能继续寻找下去了，vfsmount是整个过程的关键线索。
 
 ---
 
