@@ -64,11 +64,9 @@ why是这个？第一个参数啊，:D, 相信你应该猜到这个短小的函�
 看到这里就比较清楚了这个宏定义返回bool值，返回true或者false取决于cpu架构64位还是32位。拿常用的x86_64来说这里返回true，对应的flags就会加上O_LARGEFILE，看下面的定义可以看出这个和CPU架构是有关。
        
 	1 F   d    O_LARGEFILE       arch/alpha/include/uapi/asm/fcntl.h
-               14
-  	2 F   d    O_LARGEFILE       arch/arm/include/uapi/asm/fcntl.h
-               7
-  	3 F   d    O_LARGEFILE       arch/arm64/include/uapi/asm/fcntl.h
- 	10 F   d    O_LARGEFILE       include/uapi/asm-generic/fcntl.h
+	2 F   d    O_LARGEFILE       arch/arm/include/uapi/asm/fcntl.h
+	3 F   d    O_LARGEFILE       arch/arm64/include/uapi/asm/fcntl.h
+	10 F   d    O_LARGEFILE       include/uapi/asm-generic/fcntl.h
  
 API中对这个的flag描述如下：
 >      O_LARGEFILE
@@ -219,7 +217,7 @@ kernel的代码可阅读性很强，从字面就可以知道O_CREAT或者__O_TMP
 	if (flags & __O_SYNC)
         flags |= O_DSYNC;
 
-__O_SYNC保证了任何写入的系统调用在所有数据传递到磁盘后才会返回。O_DSYNC和它有些类似区别在于O_DSYNC会对元数据的进行更新，但是对于open系统调用来说使用__O_SYNC 就可以了，因为kernel已经实现了__O_SYNC|O_DSYNC
+__O_SYNC保证了任何写入的系统调用在所有数据传递到磁盘后才会返回。O_DSYNC和它有些类似，区别在于O_DSYNC会对元数据的进行更新，但是对于open系统调用来说使用__O_SYNC 就可以了，因为kernel已经实现了`__O_SYNC|O_DSYNC`。
 
 下一步是和临时文件有关，如果用户想要创建一个临时文件，那么flags必须有O_TMPFILE_MASK，或者有O_TMPFILE，而且是可写的
 
