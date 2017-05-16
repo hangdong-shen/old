@@ -184,15 +184,18 @@ API中对这个的flag描述如下：
 这个里面有几个概念需要说一下
 
 	int acc_mode = ACC_MODE(flags)
+
 ACC_MODE是一个宏
 
     #define ACC_MODE(x) ("\004\002\006\006"[(x)&O_ACCMODE])
 	#define O_ACCMODE      0003 
+
 这个的定义很有意思，"\004\002\006\006"等价于{'\004', '\002', '\006', '\006'}，那么这个宏的展开值就取决于(x)&O_ACCMODE得到的索引，我们使用的read， write已经read/write权限定义如下：
 
     #define O_RDONLY         00
 	#define O_WRONLY         01
 	#define O_RDWR           02
+
 通过这样的计算得到ACC_MODE，获取文件的读写等权限，实际上了解这些数字的同学看到上面的那个数组，应该就会意吧，4， 2，6不正我们在Linux系统管理的时候用来修改文件权限的么。
 
 下面这段处理则是用于获得打开文件的时候权限：
@@ -201,18 +204,21 @@ ACC_MODE是一个宏
 	        op->mode = (mode & S_IALLUGO) | S_IFREG;
 	    else 
 	        op->mode = 0;
+
 kernel的代码可阅读性很强，从字面就可以知道O_CREAT或者__O_TMPFILE大概是什么意思。这两个宏就是我们在使用open 系统调用的时候会传入的flags，如果这两者都不是，则被忽略掉，mode赋为初始值。
 
 下一步会去检查这个文件是否通过fanotify的打开，并且flag不是O_CLOEXEC。
 
 	/* Must never be set by userspace */
 	flags &= ~FMODE_NONOTIFY & ~O_CLOEXEC;
+
 默认的情况下，新的文件描述符会保持打开当同时使用execve系统调用，但是open这个系统调用可以支持O_CLOEXEC这个flag来改变这个默认的行为。这里的情况是针对这样的场景：当父进程打开一个文件并且flag是O_CLOEXEC，同时fork出来的子进程执行execve系统调用，因为子进程会继承父进程的文件描述符，通过这种方式可以防止丢失文件描述符。
 
 接着，检查flags里面是否有O_SYNC flag，应用O_DSYNC flag。
     
 	if (flags & __O_SYNC)
         flags |= O_DSYNC;
+
 __O_SYNC保证了任何写入的系统调用在所有数据传递到磁盘后才会返回。O_DSYNC和它有些类似区别在于O_DSYNC会对元数据的进行更新，但是对于open系统调用来说使用__O_SYNC 就可以了，因为kernel已经实现了__O_SYNC|O_DSYNC
 
 下一步是和临时文件有关，如果用户想要创建一个临时文件，那么flags必须有O_TMPFILE_MASK，或者有O_TMPFILE，而且是可写的
@@ -233,6 +239,7 @@ __O_SYNC保证了任何写入的系统调用在所有数据传递到磁盘后才
         flags &= O_DIRECTORY | O_NOFOLLOW | O_PATH;
         acc_mode = 0; 
     }
+
 正如在Linux的系统调用里面所说：
 > O_TMPFILE must be specified with one of O_RDWR or O_WRONLY and, optionally, O_EXCL.
 [http://man7.org/linux/man-pages/man2/open.2.html](http://man7.org/linux/man-pages/man2/open.2.html)
@@ -240,10 +247,12 @@ __O_SYNC保证了任何写入的系统调用在所有数据传递到磁盘后才
 如果没有传递创建临时文件的操作，下一步就开始检查O_PATH flag，这个flag有两个目的：
 	
 	-表明文件所在位置在整个文件系统树里（这不是废话么。。。）
-	-所做操作完全基于文件描述符的级别 
+	-所做操作完全基于文件描述符的级别
+ 
 所以在这种情况下，如果文件本身没有打开，诸如dup，fcntl 等其他操作也可以使用，和文件内容有关的操作读，写等也是可以的，flags只有O_DIRECTORY | O_NOFOLLOW | O_PATH，至此op->open_flag的值就完成了。
 
 	op->open_flag = flags
+
 现在我们已经填完了open_flag这个字段，现在我们来看看mode。
 
     /* O_TRUNC implies we need access checks for write permissions */
@@ -254,10 +263,12 @@ __O_SYNC保证了任何写入的系统调用在所有数据传递到磁盘后才
        access from general write access. */
     if (flags & O_APPEND)
         acc_mode |= MAY_APPEND;
+
 在前面我们已经对acc_mode 有过赋值的情况下，这里还有最后两步。flag O_TRUNC会把打开的文件截断为长度0，在我们使用open之前， 而O_APPEND则打开文件的追加模式，这样在写入的时候不是覆盖而是追加内容。
 接着是intent这个字段，这个字段记录的是我们是对文件打开，创建，重命名还是其他操作，如果我们的flags包涵O_PATH则intent为0，表明我们不做任何和文件内容有关的事情。
 
 	op->intent = flags & O_PATH ? 0 : LOOKUP_OPEN;
+
 或者是LOOKUP_OPEN
 
     if (flags & O_CREAT) {
@@ -265,6 +276,7 @@ __O_SYNC保证了任何写入的系统调用在所有数据传递到磁盘后才
         if (flags & O_EXCL)
             op->intent |= LOOKUP_EXCL;
     }
+
 这段的意思是如果我们创建一个新文件的时候，intent 会被加上LOOKUP_CREATE，这时如果flags又有O_EXCL则再加上LOOKUP_EXCL。
 
 最后是对lookup_flags的赋值：
@@ -274,6 +286,7 @@ __O_SYNC保证了任何写入的系统调用在所有数据传递到磁盘后才
     if (!(flags & O_NOFOLLOW))
         lookup_flags |= LOOKUP_FOLLOW;
     op->lookup_flags = lookup_flags;
+
 这段也比较好理解，第一个判断是针对目录和符号链接的，相关的解释在此就不再赘述。到这里build_open_flags 就结束了，open_flags相关的字段也已经填写完毕，现在我们回到do_sys_open
 
 ### 真正的open  ###
@@ -288,6 +301,7 @@ __O_SYNC保证了任何写入的系统调用在所有数据传递到磁盘后才
 	{   
 	    return getname_flags(filename, 0, NULL);
 	}
+
 getname_flags的实现比较长，这里就不贴了，这个函数主要的功能是把文件路径从user space 拷贝到kernel space，filename的结构体定义在include/linux/fs.h：
 
 	struct filename {
@@ -297,6 +311,7 @@ getname_flags的实现比较长，这里就不贴了，这个函数主要的功�
 	    int         refcnt;
 	    const char      iname[];
 	};
+
 	-name: 指向文件路径的指针，内核空间
 	- uptr： 注释很详细了，:)
 	- aname: 从audit上下文得到的文件名
@@ -306,10 +321,11 @@ getname_flags的实现比较长，这里就不贴了，这个函数主要的功�
 当文件名被传递到内核空间后，获取一个新的文件描述符
 
 	fd = get_unused_fd_flags(flags);
+
 get_unused_fd_flags这个函数根据flags、当前进程打开的文件fd tables和文件描述符的范围（从0~RLIMIT_NOFILE）这三个方面获取文件描述符，获取成功后在当前进程的fd tables里面置该文件描述符为busy。
 get_unused_fd_flags也会对O_CLOEXEC这一flag进行设置或者清除
 
-	    __set_open_fd(fd, fdt);
+    __set_open_fd(fd, fdt);
     if (flags & O_CLOEXEC)
         __set_close_on_exec(fd, fdt);
     else
@@ -322,6 +338,7 @@ get_unused_fd_flags也会对O_CLOEXEC这一flag进行设置或者清除
         rcu_assign_pointer(fdt->fd[fd], NULL);
     }   
 	#endif
+
 这里多贴了点，因为没想到内核也有#if 1/#endif这种调试代码，哈哈。
 最后也就是最主要的活是在do_sys_open里的do_filp_open实现里面。
 
@@ -341,9 +358,11 @@ get_unused_fd_flags也会对O_CLOEXEC这一flag进行设置或者清除
 	    restore_nameidata();
 	    return filp;
 	}
+
 这个功能主要就是根据给定的文件路径填充file这个结构体，函数一开始初始化nameidata，这个结构体提供一个指向文件inode的指针，也就是通过文件名获取到inode，接着path_openat被调用，注意到这个函数可能会被调用三次：第一次是以RCU模式打开，这种方式是最有效的方式，失败后则会尝试通过normal的方式打开，，第三次这是尝试REVAL模式也就是相对rare的方式，而path_openat这进行路径的查找，获得这个文件的目录信息，这个里面有个重要的调用就是do_last，这个函数最终会执行vfs_open函数
 
 	 int vfs_open(const struct path *path, struct file *file, const struct cred *cred)
+
 vfs_open主要的功能就是根据path，file去执行open，而这个open就是我们开篇提到的。
 
 OK, 到此基本上我们撸通open的整个kernel实现过程，当然我们跳过了很多细节，尤其是那些不是generic实现的open系统调用诸如arm64等其他，读者如果有兴趣可以去查看相关的代码。
