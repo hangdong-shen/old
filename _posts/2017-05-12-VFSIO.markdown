@@ -249,7 +249,7 @@ __O_SYNC保证了任何写入的系统调用在所有数据传递到磁盘后才
 	-表明文件所在位置在整个文件系统树里（这不是废话么。。。）
 	-所做操作完全基于文件描述符的级别
  
-所以在这种情况下，如果文件本身没有打开，诸如dup，fcntl 等其他操作也可以使用，和文件内容有关的操作读，写等也是可以的，flags只有'O_DIRECTORY | O_NOFOLLOW | O_PATH'，至此op->open_flag的值就完成了。
+所以在这种情况下，如果文件本身没有打开，诸如dup，fcntl 等其他操作也可以使用，和文件内容有关的操作读，写等也是可以的，flags只有"O_DIRECTORY | O_NOFOLLOW | O_PATH"，至此op->open_flag的值就完成了。
 
 	op->open_flag = flags
 
