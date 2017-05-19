@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "Linux VFS"
-subtitle:   " \"Linux study\""
+title:      "Linux探秘"
+subtitle:   " \"VFS\""
 date:       2017-05-14 12:00:00
 author:     "Hangdong"
 header-img: "img/post-bg-o.jpg"
