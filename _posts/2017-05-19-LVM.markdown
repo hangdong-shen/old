@@ -61,7 +61,8 @@ LVM可以给系统创建一个快照，snapshot也是直接基于VG创建的，�
 ![](/img/in-post/post-lvm/8snapshot.png) 
 ![](/img/in-post/post-lvm/9.png)
 
-LVM因为并不是kernel的代码，所以本章主要关注了如何使用它，实现原理等代码层面的解读留待后续拉。
+## LVM实现 ##
+待续
 
 ---
 
