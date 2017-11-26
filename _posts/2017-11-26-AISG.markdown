@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "串口通信与AISG"
-subtitle:   " \"NOKIA \""
+subtitle:   " \"AISG \""
 date:       2017-11-26 16:27:45 
 author:     "Hangdong"
 header-img: "img/post-sample-image.jpg"
