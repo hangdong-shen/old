@@ -237,7 +237,14 @@ do_new_mount有两个与mount相关的动作，一个是vfs_kern_mount，一个�
 
 kernel里面goto实现也蛮多的，我看的是4.10相比2.6已经优化了很多goto，说明只要用的得体，goto也不是什么洪水猛兽，我想起当时我和某一个前东家的架构师对goto的讨论，也许他要是看到这些代码应该也能接受了吧。
 
-这两个方法获取vsfmount对象，将新挂载的文件系统插入队列，接着安装新的文件系统到用户空间的目录树，当用户查找文件时，只要他发现这是一个挂载点，那么他就会到 mount_hashtable 这个哈希队列找到挂载到这个目录上的文件系统的 vfsmount 对象，继而找到文件系统的根目录，这样也就能继续寻找下去了，vfsmount是整个过程的关键线索。
+这两个方法获取vsfmount对象，将新挂载的文件系统插入队列，接着安装新的文件系统到用户空间的目录树，当用户查找文件时，只要他发现这是一个挂载点，那么他就会到 mount_hashtable 这个哈希队列找到挂载到这个目录上的文件系统的 vfsmount 对象，继而找到文件系统的根目录，这样也就能继续寻找下去了。
+
+    struct vfsmount {
+	struct dentry *mnt_root;	/* root of the mounted tree */
+	struct super_block *mnt_sb;	/* pointer to superblock */
+	int mnt_flags;
+	};
+vfsmount是整个过程的关键线索。
 
 ---
 
