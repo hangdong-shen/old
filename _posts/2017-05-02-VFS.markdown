@@ -244,7 +244,7 @@ kernel里面goto实现也蛮多的，我看的是4.10相比2.6已经优化了很
 	struct super_block *mnt_sb;	/* pointer to superblock */
 	int mnt_flags;
 	};
-vfsmount是整个过程的关键线索。
+整个过程的关键线索vfsmount的数据结构如图所示，主要包含了根节点信息，超级块信息。
 
 ---
 
