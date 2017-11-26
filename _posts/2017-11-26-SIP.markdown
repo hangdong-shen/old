@@ -2,7 +2,7 @@
 layout:     post
 title:      "SIP improvement in SBC"
 subtitle:   " \"SIP \""
-date:       11/26/2017 11:56:17 AM 
+date:       2017-11-23 16:27:45 
 author:     "Hangdong"
 header-img: "img/post-sample-image.jpg"
 catalog: true
