@@ -19,7 +19,7 @@ tags:
 ## 串口通信 ##
 我工作中涉及的是RS485和Modem两种连接方式来连接外设，传输方式是异步串行，半双工传输。传输报文的协议是HDLC协议。
 HDLC的帧格式如下：
-![](https://baike.baidu.com/pic/HDLC/1609387/0/389aa8fde3a1c62c08244d26?fr=lemma&ct=single#aid=0&pic=389aa8fde3a1c62c08244d26)
+![](/img/in-post/post-aisg/hdlc.jpg)
 
 控制系统侧需要实现各种帧的编码和解码，并适配多个第三方厂家的设备接入，继而给应用层提供统一的接口，屏蔽底层的差异。
 
