@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Big Data"
-subtitle:   " \"analysis \""
+subtitle:   " \"data analysis \""
 date:       2019-04-04 16:27:45 
 author:     "Hangdong"
 header-img: "img/post-sample-image.jpg"
@@ -35,7 +35,7 @@ tags:
 	- 网络层面： 如丢包率、流量、tcp连接数
 
 ## 架构设计 ##
-![](/img/in-post/post-bd/arch.jpg)
+![](/img/in-post/post-bd/arch.png)
 ## 数据流设计 ##
 - 程序的日志数据存入磁盘阵列
 - flume作为日志采集的agent，将日志送入kafka，定义这里的程序的topic
