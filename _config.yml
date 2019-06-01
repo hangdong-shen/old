@@ -71,7 +71,7 @@ ba_track_id: c9ffb25507af2384c22366e6ca2ebf51
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "江湖人称树哥，写代码，下厨房，带娃，棒棒哒"
+sidebar-about-description: "热衷简洁优雅的代码、快乐育儿和美食"
 sidebar-avatar: /img/avatar-hux.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
