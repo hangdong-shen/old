@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "做好软件类项目管理的思考"
-subtitle:   " \"2019年终总结\""
+title:      "开发模型和团队运营"
+subtitle:   " \"做好软件类项目管理的思考\""
 date:       2020-01-29 12:00:00
 author:     "Hangdong"
 header-img: "img/post-bg-apple-event-2015.jpg"
@@ -10,7 +10,7 @@ tags:
     - 总结
 ---
 
-> “我的管理历史 ”
+> “我的管理总结”
 
 
 ## 前言
