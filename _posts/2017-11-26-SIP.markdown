@@ -16,7 +16,7 @@ tags:
 > The Session Initiation Protocol (SIP) is a communications protocol for signaling and controlling multimedia communication sessions in applications of Internet telephony for voice and video calls, in private IP telephone systems, as well as in instant messaging over Internet Protocol (IP) networks.
 --摘自wiki
 
-该协议主要用于即时消息，语音或者视频电话。我在从事这类工作时，遇到了接入网设备穿越NAT的应用场景，SIP在解决这种场景有很多方案，综合各个方案的优劣以及当时业务的需求，我们采用了SBC的技术方案，在这种技术方案的框架下，针对业务在特殊场景下遇到的问题，我们提出了改进方案。
+该协议主要用于即时消息，语音或者视频电话。我在从事这类工作时，遇到了接入网设备穿越NAT的应用场景，SIP在解决这种场景有很多方案，综合各个方案的优劣以及当时业务的需求，我们采用了SBC（session border controller）的技术方案，但是这种技术方案的框架下，对于早媒体这类的特殊场景，存在转发异常的问题，由此我们提出了改进方案并申请了相关的专利。
 
 ---
 
